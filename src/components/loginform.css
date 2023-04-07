@@ -1,0 +1,12 @@
+section {
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: medium;
+}
+.inputButton{
+    margin: auto;
+    width: 35%;
+}
+
+.emial-input{
+    text-transform: none;;
+}
