@@ -39,6 +39,14 @@ const Analyse = () => {
     fetchData();
   }, []);
 
+  const handleLogout = () => {
+    // clear the token from local storage
+    localStorage.removeItem("token");
+
+    // navigate to the login page
+    window.location.href = "/";
+  }
+
   return (
     <div className={classes.root}>
       <Typography variant="h3" gutterBottom>Dashboard</Typography>
@@ -75,8 +83,14 @@ const Analyse = () => {
         </Grid>
       </Grid>
       <div className="d-flex justify-content-center mt-5">
-        <Button component={Link} to="/register" variant="contained" color="primary" size="large">
-          Register a doctor
+        <Button component={Link} to="/activity" variant="contained" color="primary" size="large">
+          Add Activity
+        </Button>
+        <Button variant="contained" color="secondary" size="large" onClick={handleLogout} style={{ marginLeft: '10px' }}>
+          Logout
+        </Button>
+        <Button component={Link} to="/question" variant="contained" color="primary" size="large" style={{ marginLeft: '10px' }}>
+          Add Question
         </Button>
       </div>
     </div>

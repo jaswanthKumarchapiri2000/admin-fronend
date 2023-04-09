@@ -4,7 +4,7 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {Alert} from "@material-ui/lab";
+import { Alert } from "@material-ui/lab";
 import "./loginform.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     "& > *": {
       margin: theme.spacing(1),
-      width: "25ch",
+      width: "100%", // modified to make the textfield span the full width
     },
   },
 }));
@@ -38,6 +38,7 @@ const LoginForm = () => {
         { email, password }
       );
       if (response.status === 200) {
+        localStorage.setItem("token", response.data.token); // added to store token in local storage
         navigate.push("/analyse");
       } else {
         setPopupStyle("login-popup");
