@@ -1,13 +1,23 @@
-// api.js
-
 import axios from "axios";
 
 const API = "http://localhost:8000/api";
 
 class ApiService {
+  constructor() {
+    const token = window.localStorage.getItem("token");
+
+    this.axiosInstance = axios.create({
+      baseURL: API,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
   getPatients() {
-    return axios
-      .get(`${API}/patients`)
+    return this.axiosInstance
+      .get("/patients")
       .then((response) => {
         if (response.status === 200) {
           return response.data;
@@ -23,8 +33,8 @@ class ApiService {
   }
 
   getDoctors() {
-    return axios
-      .get(`${API}/doctors`)
+    return this.axiosInstance
+      .get("/doctors")
       .then((response) => {
         if (response.status === 200) {
           return response.data;
@@ -40,8 +50,8 @@ class ApiService {
   }
 
   registerDoctor(doctor) {
-    return axios
-      .post(`${API}/doctor`, doctor)
+    return this.axiosInstance
+      .post("/doctor", doctor)
       .then((response) => {
         if (response.status === 200) {
           return response.data;
@@ -57,8 +67,8 @@ class ApiService {
   }
 
   addActivity(activity) {
-    return axios
-      .post(`${API}/activities`, activity)
+    return this.axiosInstance
+      .post("/activities", activity)
       .then((response) => {
         if (response.status === 201) {
           return response.data;
@@ -74,8 +84,8 @@ class ApiService {
   }
 
   getActivities() {
-    return axios
-      .get(`${API}/activities`)
+    return this.axiosInstance
+      .get("/activities")
       .then((response) => {
         if (response.status === 200) {
           return response.data;
@@ -91,8 +101,8 @@ class ApiService {
   }
 
   addQuestion(question) {
-    return axios
-      .post(`${API}/addquestion`, question)
+    return this.axiosInstance
+      .post("/addquestion", question)
       .then((response) => {
         if (response.status === 201) {
           return response.data;

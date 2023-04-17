@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Button, TextInput, Select,Group } from "@mantine/core";
 import service from "../services/patients";
 
 const Registration = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [age, setAge] = useState("");
+  const [dob, setDob] = useState("");
   const [experience, setExpereince] = useState("");
   const [sex, setSex] = useState("");
   const [qualification, setQualification] = useState("");
   const [specialization, setSpecialization] = useState("");
+
+
+//   useEffect(() => {
+//     const sessionUser = window.localStorage.getItem('token')
+//     if (!sessionUser){
+//       window.location.href = "/";
+
+//     }
+
+//     }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,11 +27,14 @@ const Registration = () => {
       firstName: firstName,
       lastName: lastName,
       experience:experience,
-      age: age,
+      dob: dob,
       sex: sex,
       qualification: qualification,
       specialization: specialization,
     };
+
+
+
 
     service.registerDoctor(doctor)
       .then(() => {
@@ -57,10 +70,10 @@ const Registration = () => {
 
           <TextInput
             required
-            type="number"
-            placeholder="Age"
-            value= {age}
-            onChange={(e) => setAge(e.target.value)}
+            type="date"
+            placeholder=""
+            value= {dob}
+            onChange={(e) => setDob(e.target.value)}
             min={1}
             max={150}
             style={{ width: "11.5rem" }}

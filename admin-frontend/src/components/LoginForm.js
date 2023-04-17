@@ -34,7 +34,7 @@ const LoginForm = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://jsonplaceholder.typicode.com/posts",
+        "https://jsonplaceholder.typicode.com/auth/login",
         { email, password }
       );
       if (response.status === 200) {

@@ -39,6 +39,15 @@ const Analyse = () => {
     fetchData();
   }, []);
 
+//   useEffect(() => {
+//     const sessionUser = window.localStorage.getItem('token')
+//     if (!sessionUser){
+//       window.location.href = "/";
+
+//     }
+
+//     }, []);
+
   const handleLogout = () => {
     // clear the token from local storage
     localStorage.removeItem("token");
@@ -86,12 +95,20 @@ const Analyse = () => {
         <Button component={Link} to="/activity" variant="contained" color="primary" size="large">
           Add Activity
         </Button>
-        <Button variant="contained" color="secondary" size="large" onClick={handleLogout} style={{ marginLeft: '10px' }}>
-          Logout
-        </Button>
+        
         <Button component={Link} to="/question" variant="contained" color="primary" size="large" style={{ marginLeft: '10px' }}>
           Add Question
         </Button>
+
+        <Button component={Link} to="/register" variant="contained" color="primary" size="large" style={{ marginLeft: '10px' }}>
+          Add Doctor
+        </Button>
+
+        <Button variant="contained" color="secondary" size="large" onClick={handleLogout} style={{ marginLeft: '10px' }}>
+          Logout
+        </Button>
+
+      
       </div>
     </div>
   );

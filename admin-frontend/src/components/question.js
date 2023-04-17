@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {  Button, Paper, Grid, Col, Select ,Input, Textarea} from "@mantine/core";
+import { Button, Paper, Grid, Col, Select, Input, Textarea } from "@mantine/core";
 import ApiService from "../services/patients";
 
 function QuestionForm() {
@@ -8,18 +8,53 @@ function QuestionForm() {
   const [option2, setOption2] = useState("");
   const [option3, setOption3] = useState("");
   const [option4, setOption4] = useState("");
-  const [activity, setActivity] = useState("");
+  const [activity, setActivity] = useState(0);
   const [activities, setActivities] = useState([]);
 
+  // useEffect(() => {
+  //   ApiService.getActivities()
+  //     .then((response) => {
+  //       setActivities(response.data.response);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error.message);
+  //     });
+  // }, []);
+
+  const handleChange = (event) => {
+    setActivity(event.target.value);
+  };
+
   useEffect(() => {
-    ApiService.getActivities()
-      .then((response) => {
-        setActivities(response.data);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+    // Dummy data
+    const dummyData = [
+      {  activityId: 6,
+        name: "Self Evaluation : Anxiety",
+        description: "Questionnaire exercise to evaluate traits of anxiety.",
+      },
+      {activityId: 7,
+      name: "Sleeping Habits",
+      description: "Questionnaire exercise to evaluate sleeping habits",
+    },
+    {activityId: 8,
+      name: "Depression",
+      description: "Questionnaire exercise to learn about depression",
+     },
+    ];
+    setActivities(dummyData);
   }, []);
+   
+  // useEffect(()=> {
+  //   console.log(activity)
+  //   console.log(activities)
+
+
+
+
+  // },[activity,activities]
+  // );
+
+  console.log(activity)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,9 +67,12 @@ function QuestionForm() {
         3: option3,
         4: option4,
       },
-      activity: JSON.parse(activity),
+      activity: {
+        activityId: activity,
+      },
     };
-
+     
+ 
     ApiService.addQuestion(newQuestion)
       .then(() => {
         window.location.href = "/analyze";
@@ -53,7 +91,7 @@ function QuestionForm() {
       <Col>
         <Paper padding="lg" shadow="lg">
           <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
-            Add  Question
+            Add Question
           </h1>
           <form onSubmit={handleSubmit}>
             <Textarea
@@ -91,7 +129,6 @@ function QuestionForm() {
               onChange={(e) => setOption3(e.target.value)}
               style={{ marginBottom: "10px" }}
               size="lg"
-
             />
             <Input
               label="Option 4"
@@ -101,36 +138,52 @@ function QuestionForm() {
               onChange={(e) => setOption4(e.target.value)}
               style={{ marginBottom: "10px" }}
               size="lg"
+            />
+            {/* { 
+            (activities !== undefined) && 
+            <Select 
+            label="Activity"
+            placeholder="Select activity"
+            size="lg"
+            required
+            data={activities.map((activity) => {
+              return {
+                value: JSON.stringify(activity.activityId),
+                label: activity.name,
+              };
+            })}
+            value={activity}
+            onChange={(e) => setActivity(e.target.value)}
+            style={{ marginBottom: "20px" }}
+          />
+            } */}
+            
 
-            />
-            <Select
-              label="Activity"
-              placeholder="Select activity"
-              size="lg"
-              required
-              data={activities.map((activity) => {
-                return {
-                  value: JSON.stringify(activity),
-                  label: activity.name,
-                };
-              })}
-              value={activity}
-              onChange={(e) => setActivity(e.target.value)}
-              style={{ marginBottom: "20px" }}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="gradient"
-              color="purple"
-            >
+          <select value={activity} 
+          style={{ marginBottom: "10px" ,width :"100%", padding: "10px",borderWidth: "0.1px !important"}}
+
+           onChange={(e) => setActivity(e.target.value)}>
+           <option value="0" disabled>Select an activity</option>
+           {activities.map((activity) => (
+              <option key={activity.activityId} value={activity.activityId}
+              style={{borderWidth: "0.1px !important"}}
+              >
+                {activity.name}
+              </option>
+            ))}
+
+          </select> 
+
+
+            <Button type="submit" fullWidth variant="gradient" color="purple">
               Add Question
             </Button>
-            </form>
-            </Paper>
-            </Col>
-            </Grid>
-);
+          </form>
+        </Paper>
+      </Col>
+    </Grid>
+  );
+// console.log(activity)
             };
         
 export default QuestionForm;

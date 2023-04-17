@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Input, Textarea, Button, Paper, Grid, Col } from "@mantine/core";
 import ApiService from "../services/patients";
 
@@ -10,8 +10,14 @@ function ActivityForm() {
     e.preventDefault();
 
     ApiService.addActivity({
-      name: name,
-      description: description,
+      type: "Activity",
+      admin: {
+        adminId: 1
+      },
+      activity: {
+        name: name,
+        description: description,
+      }
     })
       .then(() => {
         window.location.href = "/analyze";
