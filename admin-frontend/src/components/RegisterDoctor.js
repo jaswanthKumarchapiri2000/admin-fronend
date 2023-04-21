@@ -3,13 +3,36 @@ import { Button, TextInput, Select,Group } from "@mantine/core";
 import service from "../services/patients";
 
 const Registration = () => {
+  const [email, setEmail] =useState("");
+  const [password,setpassword] =useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dob, setDob] = useState("");
+  const [age, setAge] =useState(0);
   const [experience, setExpereince] = useState("");
-  const [sex, setSex] = useState("");
+  const [gender, setGender] = useState("");
   const [qualification, setQualification] = useState("");
   const [specialization, setSpecialization] = useState("");
+  const [doctorId, setDoctorId] =useState("") ;
+  const [adminId, setAdminId] = useState(0);
+  const [admin_email, setAdminEmail] = useState("");
+
+
+  useEffect(() => {
+    service.getAdminId(admin_email)
+      .then((response) => {
+        setAdminId(response);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, [admin_email]);
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    setAdminEmail(storedEmail);
+    console.log(admin_email);
+  }, []);
 
 
 //   useEffect(() => {
@@ -23,34 +46,91 @@ const Registration = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const doctor = {
-      firstName: firstName,
-      lastName: lastName,
-      experience:experience,
-      dob: dob,
-      sex: sex,
-      qualification: qualification,
-      specialization: specialization,
-    };
+    const doctordemo = {
+      email : email,
+      password : password,
+      userRole : {
+        roleId : 3
+      },
+      demographics : {
+        userId : 0,
+        firstName: firstName,
+        lastName: lastName,
+        // experience:experience,
+        dob: dob,
+        age: age,
+        gender: gender,
+        // qualification: qualification,
+        // specialization: specialization,
+    }
+  };
 
 
-
-
-    service.registerDoctor(doctor)
-      .then(() => {
+    service.registerDoctor(doctordemo)
+      .then((response) => {
+        setDoctorId(response.userId)
         window.location.href = "/analyse";
       })
       .catch((error) => {
         console.log(error.message);
         alert("Failed to register doctor. Please try again later.");
       });
+
+
+      const doctordetails = {
+        doctorId : doctorId,
+        admin : {
+          adminId : adminId
+        },
+        doctorDetails : {
+          doctorDetailsId : 0,
+          experience:experience,
+          qualification: qualification,
+          specialization: specialization,
+      }
+    };
+
+
+    service.register_doctor_details(doctordetails)
+      .then(() => {
+        window.location.href = "/analyse";
+      })
+      .catch((error) => {
+        console.error(error.message);
+        alert("Failed to add the Doctor. Please try again later.");
+
+      });
+
+
+
+
   };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>Register a Doctor</h2>
+      <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>Register the Doctor</h2>
       <form onSubmit={handleSubmit} style={{ width: "25rem" }}>
+
         <Group position="center">
+          <TextInput
+            type="email"
+            required
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ marginRight: "1rem" }}
+          />
+          <TextInput
+            type="password"
+            required
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setpassword(e.target.value)}
+          />
+        </Group>
+
+
+        <Group position="center"  style={{ marginTop: "1rem"  }}>
           <TextInput
             required
             placeholder="First Name"
@@ -90,22 +170,37 @@ const Registration = () => {
             style={{ marginLeft: "0.9rem" , width: "11.5rem"}}
           />
         </Group>
+
+
         <Group position="center" style={{ marginTop: "1rem" }}>
+
+          {/* <TextInput
+              required
+              type="number"
+              placeholder="Age"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              min={1}
+              max={150}
+              style={{ marginTop:"1.8rem" ,width: "11.5rem"}}
+            /> */}
+
           <Select
             required
             label="Sex"
             placeholder="Select"
             data={[
-              { value: "male", label: "Male" },
-              { value: "female", label: "Female" },
-              { value: "other", label: "Other" },
+              { value: "M", label: "Male" },
+              { value: "F", label: "Female" },
+              { value: "O", label: "Other" },
             ]}
-            value={sex}
-            onChange={(value) => setSex(value)}
-            style={{ marginLeft: "1rem", marginRight: "1rem" }}
+            value={gender}
+            onChange={(value) => setGender(value)}
+            style={{ marginLeft: "1rem", marginRight: "0rem"}}
           />
           </Group>
-        <Group position="center" style={{ marginTop: "1rem" }}>
+
+        <Group position="center" style={{ marginTop: "1.5rem" }}>
           <TextInput
             required
             placeholder="Qualification"
@@ -120,6 +215,7 @@ const Registration = () => {
             onChange={(e) => setSpecialization(e.target.value)}
           />
         </Group>
+
         <Button
           type="submit"
           // variant="outline"

@@ -11,38 +11,39 @@ function QuestionForm() {
   const [activity, setActivity] = useState(0);
   const [activities, setActivities] = useState([]);
 
-  // useEffect(() => {
-  //   ApiService.getActivities()
-  //     .then((response) => {
-  //       setActivities(response.data.response);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error.message);
-  //     });
-  // }, []);
+  useEffect(() => {
+    ApiService.getActivities()
+      .then((response) => {
+        setActivities(response.data.response);
+      })
+      .catch((error) => {
+        console.error(error.message);
+
+      });
+  }, []);
 
   const handleChange = (event) => {
     setActivity(event.target.value);
   };
 
-  useEffect(() => {
-    // Dummy data
-    const dummyData = [
-      {  activityId: 6,
-        name: "Self Evaluation : Anxiety",
-        description: "Questionnaire exercise to evaluate traits of anxiety.",
-      },
-      {activityId: 7,
-      name: "Sleeping Habits",
-      description: "Questionnaire exercise to evaluate sleeping habits",
-    },
-    {activityId: 8,
-      name: "Depression",
-      description: "Questionnaire exercise to learn about depression",
-     },
-    ];
-    setActivities(dummyData);
-  }, []);
+  // useEffect(() => {
+  //   // Dummy data
+  //   const dummyData = [
+  //     {  activityId: 6,
+  //       name: "Self Evaluation : Anxiety",
+  //       description: "Questionnaire exercise to evaluate traits of anxiety.",
+  //     },
+  //     {activityId: 7,
+  //     name: "Sleeping Habits",
+  //     description: "Questionnaire exercise to evaluate sleeping habits",
+  //   },
+  //   {activityId: 8,
+  //     name: "Depression",
+  //     description: "Questionnaire exercise to learn about depression",
+  //    },
+  //   ];
+  //   setActivities(dummyData);
+  // }, []);
    
   // useEffect(()=> {
   //   console.log(activity)
@@ -54,7 +55,7 @@ function QuestionForm() {
   // },[activity,activities]
   // );
 
-  console.log(activity)
+  // console.log(activity)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,17 +69,20 @@ function QuestionForm() {
         4: option4,
       },
       activity: {
-        activityId: activity,
+        activityId: parseInt(activity),
       },
     };
+    console.log(newQuestion);
      
  
     ApiService.addQuestion(newQuestion)
       .then(() => {
-        window.location.href = "/analyze";
+        window.location.href = "/analyse";
       })
       .catch((error) => {
         console.error(error.message);
+        alert("Failed to add the question. Please try again later.");
+
       });
   };
 

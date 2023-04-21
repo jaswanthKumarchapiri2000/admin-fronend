@@ -1,24 +1,36 @@
 import axios from "axios";
 
-const API = "http://localhost:8000/api";
+const API = "https://1b10-119-161-98-68.ngrok-free.app";
+let token = "";
+
 
 class ApiService {
   constructor() {
-    const token = window.localStorage.getItem("token");
+    console.log(token)
 
     this.axiosInstance = axios.create({
       baseURL: API,
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        'Content-Type': "application/json",
+        'Authorization': `Bearer ${token}`,
       },
     });
   }
 
+
   getPatients() {
-    return this.axiosInstance
-      .get("/patients")
+    token=window.localStorage.getItem("token")
+    console.log("token",token)
+    return axios
+      .get(`${API}/patients/get-all`,{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      })
+  
       .then((response) => {
+        console.log(response)
         if (response.status === 200) {
           return response.data;
         } else {
@@ -32,9 +44,30 @@ class ApiService {
       });
   }
 
+  getAdminId(email) {
+    token=window.localStorage.getItem("token");
+    console.log("inside getadminid")
+    return axios.get(`${API}/users/${email}`,{
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    }).then((response) => {
+      console.log(response.data)
+      const user = response.data.response.userId;
+      return user;
+    });
+  }
+
   getDoctors() {
-    return this.axiosInstance
-      .get("/doctors")
+    token=window.localStorage.getItem("token");
+    return axios
+    .get(`${API}/doctors/get-all`, {
+      headers: {
+        'Content-Type': "application/json",
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         if (response.status === 200) {
           return response.data;
@@ -50,8 +83,14 @@ class ApiService {
   }
 
   registerDoctor(doctor) {
-    return this.axiosInstance
-      .post("/doctor", doctor)
+    token=window.localStorage.getItem("token");
+    return axios
+      .post(`${API}/users/add`, doctor,{
+        headers: {
+          'Content-Type': "application/json",
+          'Authorization': `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status === 200) {
           return response.data;
@@ -66,11 +105,43 @@ class ApiService {
       });
   }
 
-  addActivity(activity) {
-    return this.axiosInstance
-      .post("/activities", activity)
+
+  register_doctor_details(doctordetails) {
+    token=window.localStorage.getItem("token");
+    return axios
+      .post(`${API}/admin/register-doctor`, doctordetails,{
+        headers: {
+          'Content-Type': "application/json",
+          'Authorization': `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 200) {
+          return response.data;
+        } else {
+          throw new Error(
+            `Failed to register doctor. Status code: ${response.status}`
+          );
+        }
+      })
+      .catch((error) => {
+        throw new Error(`Failed to register doctor. ${error.message}`);
+      });
+  }
+
+
+
+  addActivity(activity) {
+    console.log("inside add activity")
+    return axios
+      .post(`${API}/item/create`, activity,{
+        headers: {
+          'Content-Type': "application/json",
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
           return response.data;
         } else {
           throw new Error(
@@ -84,11 +155,16 @@ class ApiService {
   }
 
   getActivities() {
-    return this.axiosInstance
-      .get("/activities")
+    return axios
+      .get(`${API}/activities`,{
+        headers: {
+          'Content-Type': "application/json",
+          'Authorization': `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status === 200) {
-          return response.data;
+          return response;
         } else {
           throw new Error(
             `Failed to fetch activities. Status code: ${response.status}`
@@ -101,10 +177,16 @@ class ApiService {
   }
 
   addQuestion(question) {
-    return this.axiosInstance
-      .post("/addquestion", question)
+    console.log(question);
+    return axios
+      .post(`${API}/admin/add-question`, question,{
+        headers: {
+          'Content-Type': "application/json",
+          'Authorization': `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           return response.data;
         } else {
           throw new Error(

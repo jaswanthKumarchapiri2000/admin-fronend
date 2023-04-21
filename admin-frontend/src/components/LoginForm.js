@@ -26,20 +26,30 @@ const useStyles = makeStyles((theme) => ({
 const LoginForm = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+  const [email1, setemail] = useState("");
+  const [password1, setpassword] = useState("");
   const [popupStyle, setPopupStyle] = useState("hide");
 
   const handleSubmit = async (event) => {
+    console.log(email1);
+    console.log(password1);
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://jsonplaceholder.typicode.com/auth/login",
-        { email, password }
+        "https://1b10-119-161-98-68.ngrok-free.app/auth/login",
+      
+        { email : email1,
+           password :password1
+           }
       );
+      console.log(response.status);
+      console.log(response);
       if (response.status === 200) {
+        console.log("inside the fuction")
         localStorage.setItem("token", response.data.token); // added to store token in local storage
-        navigate.push("/analyse");
+        localStorage.setItem("email", email1); // added to store email in local storage
+
+        navigate("/analyse");
       } else {
         setPopupStyle("login-popup");
       }
@@ -62,7 +72,7 @@ const LoginForm = () => {
                       label="Email"
                       variant="outlined"
                       type="email"
-                      value={email}
+                      value={email1}
                       onChange={(e) => setemail(e.target.value)}
                       autoCapitalize="none"
                       required
@@ -72,7 +82,7 @@ const LoginForm = () => {
                       label="Password"
                       variant="outlined"
                       type="password"
-                      value={password}
+                      value={password1}
                       onChange={(e) => setpassword(e.target.value)}
                       autoCapitalize="none"
                       required

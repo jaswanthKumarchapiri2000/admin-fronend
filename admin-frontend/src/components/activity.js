@@ -5,25 +5,64 @@ import ApiService from "../services/patients";
 function ActivityForm() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [adminId, setAdminId] = useState(0);
+  const [email, setEmail] = useState("");
+
+
+  useEffect(() => {
+    ApiService.getAdminId(email)
+      .then((response) => {
+        setAdminId(response);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, [email]);
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    setEmail(storedEmail);
+    console.log(email);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("inside handle submit")
+
+      
+    
+    // ApiService.addActivity(
+    //   {
+    //     type : "Activity",
+    //     admin : {
+    //         "adminId" : 1
+    //     },
+    //     activity : {
+    //         name: "Depression",
+    //         description : "Questionnaire exercise to learn about depression" 
+    //     }
+    // }
+    // )
 
     ApiService.addActivity({
       type: "Activity",
       admin: {
-        adminId: 1
+        adminId: adminId
       },
       activity: {
         name: name,
         description: description,
       }
     })
+
+
       .then(() => {
-        window.location.href = "/analyze";
+        window.location.href = "/analyse";
       })
       .catch((error) => {
         console.error(error.message);
+        alert("Failed to add the activity. Please try again later.");
+
       });
   };
 
