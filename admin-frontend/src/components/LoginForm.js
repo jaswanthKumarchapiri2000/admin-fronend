@@ -36,7 +36,7 @@ const LoginForm = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "https://1b10-119-161-98-68.ngrok-free.app/auth/login",
+        "https://3b58-103-156-19-229.ngrok-free.app/auth/login",
       
         { email : email1,
            password :password1
@@ -60,12 +60,12 @@ const LoginForm = () => {
 
   return (
     <div className="loginPage">
-      <section className="vh-100 loginSection">
+      <section className="vh-70 loginSection">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
               <div className="card shadow-2-strong">
-                <div className="card-body p-5 text-center">
+                <div className="card-body p-5 text-center loginContainer">
                   <h3 className="mb-5">Login</h3>
                   <form onSubmit={handleSubmit} className={classes.textField}>
                     <TextField

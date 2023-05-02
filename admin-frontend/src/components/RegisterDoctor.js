@@ -1,116 +1,134 @@
-import React, { useState ,useEffect} from "react";
-import { Button, TextInput, Select,Group } from "@mantine/core";
+import React, { useState, useEffect } from "react";
+import { Button, TextInput, Select, Group } from "@mantine/core";
 import service from "../services/patients";
 
 const Registration = () => {
-  const [email, setEmail] =useState("");
-  const [password,setpassword] =useState("");
+  const [email, setEmail] = useState("");
+  const [password, setpassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dob, setDob] = useState("");
-  const [age, setAge] =useState(0);
-  const [experience, setExpereince] = useState("");
+  const [age, setAge] = useState(0);
+  const [experience, setExpereince] = useState(0);
   const [gender, setGender] = useState("");
   const [qualification, setQualification] = useState("");
   const [specialization, setSpecialization] = useState("");
-  const [doctorId, setDoctorId] =useState("") ;
+  const [doctorId, setDoctorId] = useState();
   const [adminId, setAdminId] = useState(0);
-  const [admin_email, setAdminEmail] = useState("");
+  const [admin_email, setAdminEmail] = useState("default email");
 
-
-  useEffect(() => {
-    service.getAdminId(admin_email)
-      .then((response) => {
-        setAdminId(response);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  }, [admin_email]);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
+    console.log("stored email from LS = " + storedEmail);
     setAdminEmail(storedEmail);
+    
+    async function fetchData() {
+      const response = await service.getAdminId(storedEmail);
+      console.log(response);
+      setAdminId(response);
+    }
+  
+    fetchData();
     console.log(admin_email);
   }, []);
+  
 
 
-//   useEffect(() => {
-//     const sessionUser = window.localStorage.getItem('token')
-//     if (!sessionUser){
-//       window.location.href = "/";
+  // useEffect(() => {
+  //   const storedEmail = localStorage.getItem("email");
+  //   console.log("stored email from LS = " + storedEmail);
+  //   setAdminEmail(storedEmail);
+    
 
-//     }
+  //   async function fetchData() {
+  //     const response = await service.getAdminId(admin_email);
+  //     console.log(response);
+  //     setAdminId(response);
+  //   }
 
-//     }, []);
+  //   fetchData();
+  //   console.log(admin_email);
+  // }, []);
 
-  const handleSubmit = (e) => {
+  //   useEffect(() => {
+  //     const sessionUser = window.localStorage.getItem('token')
+  //     if (!sessionUser){
+  //       window.location.href = "/";
+
+  //     }
+
+  //     }, []);
+
+  async function handleSubmit(e) {
+    console.log(adminId)
+    let temp = dob.toString();
+    temp = temp.slice(8, 10) + "/" + temp.slice(5, 7) + "/" + temp.slice(0, 4);
+    setDob(temp);
+    console.log(dob);
     e.preventDefault();
     const doctordemo = {
-      email : email,
-      password : password,
-      userRole : {
-        roleId : 3
+      email: email,
+      password: password,
+      userRole: {
+        roleId: 2,
       },
-      demographics : {
-        userId : 0,
+      demographics: {
+        userId: 0,
         firstName: firstName,
         lastName: lastName,
-        // experience:experience,
-        dob: dob,
+        dob: temp,
         age: age,
         gender: gender,
-        // qualification: qualification,
-        // specialization: specialization,
-    }
-  };
-
-
-    service.registerDoctor(doctordemo)
-      .then((response) => {
-        setDoctorId(response.userId)
-        window.location.href = "/analyse";
-      })
-      .catch((error) => {
-        console.log(error.message);
-        alert("Failed to register doctor. Please try again later.");
-      });
-
-
-      const doctordetails = {
-        doctorId : doctorId,
-        admin : {
-          adminId : adminId
-        },
-        doctorDetails : {
-          doctorDetailsId : 0,
-          experience:experience,
-          qualification: qualification,
-          specialization: specialization,
-      }
+      },
     };
 
+    console.log(doctordemo)
 
-    service.register_doctor_details(doctordetails)
-      .then(() => {
+    const response = await service.registerDoctor(doctordemo)
+    let doctor_id= response.userId
+    
+    console.log(response.userId)
+    setDoctorId(response.userId);
+    console.log(doctorId);
+    
+      const doctordetails = {
+        doctorId: doctor_id,
+        admin: {
+          adminId: adminId,
+        },
+        doctorDetails: {
+          doctorDetailsId: 0,
+          experience: experience,
+          qualification: qualification,
+          specialization: specialization,
+        },
+      };
+      console.log(doctordetails);
+      const resp = service.register_doctor_details(doctordetails)
+      if( resp.status === 200) {
         window.location.href = "/analyse";
-      })
-      .catch((error) => {
-        console.error(error.message);
-        alert("Failed to add the Doctor. Please try again later.");
+      }
 
-      });
+    
 
 
+  }
 
-
-  };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "2rem" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>Register the Doctor</h2>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "2rem",
+      }}
+    >
+      <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>
+        Register the Doctor
+      </h2>
       <form onSubmit={handleSubmit} style={{ width: "25rem" }}>
-
         <Group position="center">
           <TextInput
             type="email"
@@ -129,8 +147,7 @@ const Registration = () => {
           />
         </Group>
 
-
-        <Group position="center"  style={{ marginTop: "1rem"  }}>
+        <Group position="center" style={{ marginTop: "1rem" }}>
           <TextInput
             required
             placeholder="First Name"
@@ -146,20 +163,19 @@ const Registration = () => {
           />
         </Group>
 
-        <Group position="center" style={{ marginTop: "1rem"  }}>
-
+        <Group position="center" style={{ marginTop: "1rem" }}>
           <TextInput
             required
             type="date"
             placeholder=""
-            value= {dob}
+            value={dob}
             onChange={(e) => setDob(e.target.value)}
             min={1}
             max={150}
             style={{ width: "11.5rem" }}
           />
 
-         <TextInput
+          <TextInput
             required
             type="number"
             placeholder="experience"
@@ -167,13 +183,11 @@ const Registration = () => {
             onChange={(e) => setExpereince(e.target.value)}
             min={1}
             max={150}
-            style={{ marginLeft: "0.9rem" , width: "11.5rem"}}
+            style={{ marginLeft: "0.9rem", width: "11.5rem" }}
           />
         </Group>
 
-
         <Group position="center" style={{ marginTop: "1rem" }}>
-
           {/* <TextInput
               required
               type="number"
@@ -196,9 +210,9 @@ const Registration = () => {
             ]}
             value={gender}
             onChange={(value) => setGender(value)}
-            style={{ marginLeft: "1rem", marginRight: "0rem"}}
+            style={{ marginLeft: "1rem", marginRight: "0rem" }}
           />
-          </Group>
+        </Group>
 
         <Group position="center" style={{ marginTop: "1.5rem" }}>
           <TextInput
@@ -222,14 +236,12 @@ const Registration = () => {
           color="blue"
           fullWidth
           placeholder="Register"
-
           style={{ marginTop: "2rem" }}
-          >
-            Register
-          </Button>
-          </form>
-          </div>
+        >
+          Register
+        </Button>
+      </form>
+    </div>
   );
-          };
+};
 export default Registration;
-      

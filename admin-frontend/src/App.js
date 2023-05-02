@@ -6,15 +6,18 @@ import doctorregistration from './components/RegisterDoctor';
 import analyse from './components/analyse';
 import ActivityPage from './components/activity';
 import question from './components/question'
-
+import Loginform from './components/LoginForm';
+import HeaderPage from './components/HeaderPage';
+import FooterPage from './components/FooterPage';
 
 function App() {
   return (
     <div>
+      <HeaderPage/>
       <Router>
         <div className='container'>
           <Routes>
-              <Route path='/' Component={LoginForm}></Route>
+              <Route path='/' Component={Loginform}></Route>
               <Route path='/analyse' Component={analyse}></Route>
               <Route path='/register' Component={doctorregistration}></Route>
               <Route path='/activity' Component={ActivityPage}></Route>
@@ -26,6 +29,7 @@ function App() {
            
         </div>
       </Router>
+      <FooterPage/>
     </div>
   );
 }

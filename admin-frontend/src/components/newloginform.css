@@ -1,0 +1,21 @@
+body {
+    background-color: #48435d !important;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .my-5 {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .MDBBtn:active {
+    transform: scale(0.98) !important;
+  }
+  
+  

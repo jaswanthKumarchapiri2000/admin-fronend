@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://1b10-119-161-98-68.ngrok-free.app";
+const API = "https://3b58-103-156-19-229.ngrok-free.app";
 let token = "";
 
 
@@ -13,19 +13,21 @@ class ApiService {
       headers: {
         'Content-Type': "application/json",
         'Authorization': `Bearer ${token}`,
+        'ngrok-skip-browser-warning': true,
       },
     });
   }
 
 
-  getPatients() {
+  async getPatients() {
     token=window.localStorage.getItem("token")
     console.log("token",token)
-    return axios
+    return await axios
       .get(`${API}/patients/get-all`,{
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': true,
       }
       })
   
@@ -44,28 +46,32 @@ class ApiService {
       });
   }
 
-  getAdminId(email) {
-    token=window.localStorage.getItem("token");
+  async getAdminId(email) {
+    console.log(email)
+    token=window.localStorage.getItem("token")
     console.log("inside getadminid")
-    return axios.get(`${API}/users/${email}`,{
+    return await axios.get(`${API}/users/${email}`,{
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'ngrok-skip-browser-warning': true,
     }
     }).then((response) => {
       console.log(response.data)
-      const user = response.data.response.userId;
+      const user = response.data.userId;
       return user;
     });
   }
 
-  getDoctors() {
-    token=window.localStorage.getItem("token");
-    return axios
+  async getDoctors() {
+    token=window.localStorage.getItem("token")
+    console.log("token",token)
+    return await axios
     .get(`${API}/doctors/get-all`, {
       headers: {
         'Content-Type': "application/json",
         'Authorization': `Bearer ${token}`,
+        'ngrok-skip-browser-warning': true,
       },
     })
       .then((response) => {
@@ -82,62 +88,78 @@ class ApiService {
       });
   }
 
-  registerDoctor(doctor) {
-    token=window.localStorage.getItem("token");
-    return axios
-      .post(`${API}/users/add`, doctor,{
-        headers: {
-          'Content-Type': "application/json",
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.data;
-        } else {
-          throw new Error(
-            `Failed to register doctor. Status code: ${response.status}`
-          );
-        }
-      })
-      .catch((error) => {
-        throw new Error(`Failed to register doctor. ${error.message}`);
-      });
+  async registerDoctor(doctor) {
+    token=window.localStorage.getItem("token")
+    console.log(doctor)
+    console.log(token);
+    try {
+      console.log(`${API}/users/add`);
+        const response = await axios.post(`${API}/users/add`, doctor,{maxRedirects: 0,
+          headers: {
+            'Content-Type': "application/json",
+            'Authorization': `Bearer ${token}`,
+            'ngrok-skip-browser-warning': true
+          }});
+        console.log(response);
+        return response.data;
+      } catch (error) {
+        console.error(error);
   }
+    // const response = await axios
+    //   .post(`${API}/users/add`, doctor,{
+    //     headers: {
+    //       'Content-Type': "application/json",
+    //       'Authorization': `Bearer ${token}`,
+    //       'ngrok-skip-browser-warning': true,
+    //     },
+    //   })
+    //   .then((response) => { 
+    //     if (response.status === 200) {
+    //       console.log(response)
+    //       return response.data;
+    //     } else {
+    //       throw new Error(
+    //         `Failed to add doctors. Status code: ${response.status}`
+    //       );
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     throw new Error(`Failed to add doctors. ${error.message}`);
+    //   });
+       }
+  
 
 
-  register_doctor_details(doctordetails) {
-    token=window.localStorage.getItem("token");
-    return axios
+  async register_doctor_details(doctordetails) {
+    token=window.localStorage.getItem("token")
+    console.log("token",token)
+    try{
+    const response = await axios
       .post(`${API}/admin/register-doctor`, doctordetails,{
         headers: {
           'Content-Type': "application/json",
           'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': true,
         },
       })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.data;
-        } else {
-          throw new Error(
-            `Failed to register doctor. Status code: ${response.status}`
-          );
-        }
-      })
-      .catch((error) => {
-        throw new Error(`Failed to register doctor. ${error.message}`);
-      });
+      return response
+    }
+      catch(error){
+        console.error(error);
+      }
   }
 
 
 
-  addActivity(activity) {
-    console.log("inside add activity")
-    return axios
+  async addActivity(activity) {    
+    token=window.localStorage.getItem("token")
+    console.log("activity")
+    return await axios
       .post(`${API}/item/create`, activity,{
         headers: {
           'Content-Type': "application/json",
           'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': true,
         },
       })
       .then((response) => {
@@ -154,12 +176,15 @@ class ApiService {
       });
   }
 
-  getActivities() {
-    return axios
+  async getActivities() {
+    token=window.localStorage.getItem("token")
+    console.log("token",token)
+    return await axios
       .get(`${API}/activities`,{
         headers: {
           'Content-Type': "application/json",
           'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': true,
         },
       })
       .then((response) => {
@@ -176,13 +201,15 @@ class ApiService {
       });
   }
 
-  addQuestion(question) {
+  async addQuestion(question) {
+    token=window.localStorage.getItem("token");
     console.log(question);
-    return axios
+    return await axios
       .post(`${API}/admin/add-question`, question,{
         headers: {
           'Content-Type': "application/json",
           'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': true,
         },
       })
       .then((response) => {

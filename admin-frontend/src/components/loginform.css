@@ -10,3 +10,6 @@ section {
 .emial-input{
     text-transform: none;;
 }
+.loginContainer{
+    background-image: linear-gradient(skyblue, white);
+}

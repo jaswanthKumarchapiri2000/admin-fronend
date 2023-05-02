@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import service from "../services/patients"
-
+import Badge from "@material-ui/core/Badge";
+import './analyse.css';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -48,21 +49,25 @@ const Analyse = () => {
 
 //     }, []);
 
-  const handleLogout = () => {
-    // clear the token from local storage
-    localStorage.removeItem("token");
+  // const handleLogout = () => {
+  //   // clear the token from local storage
+  //   localStorage.removeItem("token");
 
-    // navigate to the login page
-    window.location.href = "/";
-  }
+  //   // navigate to the login page
+  //   window.location.href = "/";
+  // }
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3" gutterBottom>Dashboard</Typography>
+      {/* <Typography variant="h3" gutterBottom>Dashboard</Typography> */}
+      <h4 className="h4 my-3 text-center text-primary">Admin Dashboard</h4>
       <Grid container spacing={4}>
         <Grid item xs={12} sm={6}>
-          <Card className={classes.card}>
-            <CardContent>
+          <Card className="card p-5 shadow-sm myCard">
+            <Badge badgeContent={"Patient's"} color="primary">
+                {""}
+              </Badge>
+            <CardContent className='my-3'>
               <Typography variant="h5" component="h2" gutterBottom>
                 Number of Patients Registered
               </Typography>
@@ -76,8 +81,11 @@ const Analyse = () => {
           </Card>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Card className={classes.card}>
-            <CardContent>
+          <Card className="card p-5 shadow-sm myCard">
+          <Badge badgeContent={"Doctor's"} color="primary">
+                {""}
+              </Badge>
+            <CardContent  className='my-3'>
               <Typography variant="h5" component="h2" gutterBottom>
                 Number of Doctors
               </Typography>
@@ -104,9 +112,9 @@ const Analyse = () => {
           Add Doctor
         </Button>
 
-        <Button variant="contained" color="secondary" size="large" onClick={handleLogout} style={{ marginLeft: '10px' }}>
+        {/* <Button variant="contained" color="secondary" size="large" onClick={handleLogout} style={{ marginLeft: '10px' }}>
           Logout
-        </Button>
+        </Button> */}
 
       
       </div>

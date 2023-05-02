@@ -1,13 +1,16 @@
-import { useState,useEffect } from "react";
-import { Input, Textarea, Button, Paper, Grid, Col } from "@mantine/core";
+import { useState, useEffect } from "react";
+import { Input, Textarea, Button } from "@mantine/core";
 import ApiService from "../services/patients";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRunning } from "@fortawesome/free-solid-svg-icons";
+import "./activity.css";
 
 function ActivityForm() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [adminId, setAdminId] = useState(0);
   const [email, setEmail] = useState("");
-
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   useEffect(() => {
     ApiService.getAdminId(email)
@@ -22,69 +25,53 @@ function ActivityForm() {
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
     setEmail(storedEmail);
-    console.log(email);
   }, []);
+
+  useEffect(() => {
+    if (name.trim() !== "" && description.trim() !== "") {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [name, description]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("inside handle submit")
-
-      
-    
-    // ApiService.addActivity(
-    //   {
-    //     type : "Activity",
-    //     admin : {
-    //         "adminId" : 1
-    //     },
-    //     activity : {
-    //         name: "Depression",
-    //         description : "Questionnaire exercise to learn about depression" 
-    //     }
-    // }
-    // )
-
     ApiService.addActivity({
       type: "Activity",
       admin: {
-        adminId: adminId
+        adminId: adminId,
       },
       activity: {
         name: name,
         description: description,
-      }
+      },
     })
-
-
       .then(() => {
         window.location.href = "/analyse";
       })
       .catch((error) => {
         console.error(error.message);
         alert("Failed to add the activity. Please try again later.");
-
       });
   };
 
   return (
-    <Grid
-      style={{ marginTop: "50px"  ,width:"20 px" }}
-      cols={[{ xs: 12, sm: 8, md: 6, lg: 4, xl: 3 }]}
-      justify="center"
-    >
-      <Col>
-        <Paper padding="lg" shadow="lg">
-          <h1 style={{ textAlign: "center", marginBottom: "30px" }}>
-            Add an Activity
-          </h1>
-          <form onSubmit={handleSubmit}>
-            <Textarea
+    <div className="activity-form-container m-5 mx-auto text-center">
+      <div className="activity-form">
+        <div className="activity-icon-container">
+          <FontAwesomeIcon icon={faRunning} size="5x" color="#7B16FF" />
+        </div>
+        <h1 className="activity-title">Add an Activity</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="activity-inputs-container">
+            <Input
               label="Activity Name"
               placeholder="Enter activity name"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              style={{ marginBottom: "20px" }}
+              className="activity-input"
             />
             <Textarea
               label="Activity Description"
@@ -92,21 +79,21 @@ function ActivityForm() {
               required
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              style={{ marginBottom: "20px", width: "100%", resize: "none" }}
-              // size="lg"
+              className="activity-input"
+              style={{ resize: "none"}}
             />
             <Button
-              type="submit"
-              fullWidth
-              variant="gradient"
-              color="purple"
-            >
-              Add Activity
-            </Button>
-          </form>
-        </Paper>
-      </Col>
-    </Grid>
+            type="submit"
+            fullWidth
+            className="activity-button btn btn-primary"
+          >
+            Add Activity
+          </Button>
+          </div>
+          
+        </form>
+      </div>
+    </div>
   );
 }
 
