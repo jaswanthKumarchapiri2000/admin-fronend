@@ -3,7 +3,8 @@ import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-k
 import './FooterPage.css'
 export default function FooterPage() {
   return (
-    <MDBFooter className='text-center text-lg-start shadow-sm footerPage'>
+    <MDBFooter className='text-center text-lg-start shadow-sm footerPage' style={{marginTop:"3rem"
+    }}>
       <section className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom'>
         <div className='me-5 d-none d-lg-block'>
           <span>Get connected with us on social networks:</span>
@@ -35,13 +36,13 @@ export default function FooterPage() {
         <MDBContainer className='text-center text-md-start mt-5'>
           <MDBRow className='mt-3'>
             <MDBCol md="3" lg="4" xl="3" className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>
+              <h4 className='text fw-bold mb-4'>
                 <MDBIcon icon="gem" className="me-3" />
-                Company name
-              </h6>
+                Better U
+              </h4>
               <p>
-                Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
-                consectetur adipisicing elit.
+              "Better U is a journey of self-discovery and self-improvement - 
+              a reminder that the power to change lies within you."
               </p>
             </MDBCol>
 
@@ -72,23 +73,23 @@ export default function FooterPage() {
             <MDBCol md="3" lg="2" xl="2" className='mx-auto mb-4'>
               <h6 className='text-uppercase fw-bold mb-4'>Useful links</h6>
               <p>
-                <a href='#!' className='pageLinks'>
-                  Pricing
+                <a href='https://echargementalhealth.nimhans.ac.in/pushd/' className='pageLinks'>
+                  PUSH-D
                 </a>
               </p>
               <p>
-                <a href='#!' className='pageLinks'>
-                  Settings
+                <a href='https://tinybuddha.com/' className='pageLinks'>
+                  tiny buddha
                 </a>
               </p>
               <p>
-                <a href='#!' className='pageLinks'>
-                  Orders
+                <a href='https://insighttimer.com/en-in' className='pageLinks'>
+                  Insight Timer
                 </a>
               </p>
               <p>
-                <a href='#!' className='pageLinks'>
-                  Help
+                <a href='https://www.headspace.com/' className='pageLinks'>
+                  headspace
                 </a>
               </p>
             </MDBCol>
@@ -101,10 +102,10 @@ export default function FooterPage() {
               </p>
               <p>
                 <MDBIcon icon="envelope" className="me-3" />
-                info@example.com
+                Jaswanth.Chapiri@iiitb.ac.in
               </p>
               <p>
-                <MDBIcon icon="phone" className="me-3" /> + 01 234 567 88
+                <MDBIcon icon="phone" className="me-3" /> +91 9381679935
               </p>
               <p>
                 <MDBIcon icon="print" className="me-3" /> + 01 234 567 89
@@ -115,7 +116,7 @@ export default function FooterPage() {
       </section>
 
       <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        © 2021 Copyright:
+        © 2023 Copyright:
         <a className='pageLinks fw-bold' href='https://mdbootstrap.com/'>
           MDBootstrap.com
         </a>

@@ -24,6 +24,17 @@ const Analyse = () => {
   const [numPatients, setNumPatients] = useState(0);
   const [numDoctors, setNumDoctors] = useState(0);
 
+   
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+    if (!token){
+
+      window.location.href = "/";
+
+    }
+
+    }, []);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -58,7 +69,7 @@ const Analyse = () => {
   // }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} >
       {/* <Typography variant="h3" gutterBottom>Dashboard</Typography> */}
       <h4 className="h4 my-3 text-center text-primary">Admin Dashboard</h4>
       <Grid container spacing={4}>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Paper, Grid, Col, Select, Input, Textarea } from "@mantine/core";
 import ApiService from "../services/patients";
+import "./question.css"
 
 function QuestionForm() {
   const [question, setQuestion] = useState("");
@@ -10,6 +11,17 @@ function QuestionForm() {
   const [option4, setOption4] = useState("");
   const [activity, setActivity] = useState(0);
   const [activities, setActivities] = useState([]);
+
+   
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+    if (!token){
+
+      window.location.href = "/";
+
+    }
+
+    }, []);
 
   useEffect(() => {
     ApiService.getActivities()
@@ -87,8 +99,9 @@ function QuestionForm() {
   };
 
   return (
+    <div className="activity-form-container m-8 mx-auto " style={{marginTop: "2rem",overflow:"auto"}}>
     <Grid
-      style={{ marginTop: "50px", maxWidth: "600px", margin: "0 auto" }}
+      style={{ width: "100%",height:"100%" ,padding:"10px", boxSizing:"border-box"}}
       cols={[{ xs: 12, sm: 8, md: 6, lg: 4, xl: 3 }]}
       justify="center"
     >
@@ -186,6 +199,7 @@ function QuestionForm() {
         </Paper>
       </Col>
     </Grid>
+    </div>
   );
 // console.log(activity)
             };

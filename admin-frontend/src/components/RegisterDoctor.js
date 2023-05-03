@@ -9,7 +9,7 @@ const Registration = () => {
   const [lastName, setLastName] = useState("");
   const [dob, setDob] = useState("");
   const [age, setAge] = useState(0);
-  const [experience, setExpereince] = useState(0);
+  const [experience, setExpereince] = useState("");
   const [gender, setGender] = useState("");
   const [qualification, setQualification] = useState("");
   const [specialization, setSpecialization] = useState("");
@@ -17,6 +17,17 @@ const Registration = () => {
   const [adminId, setAdminId] = useState(0);
   const [admin_email, setAdminEmail] = useState("default email");
 
+
+  
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+    if (!token){
+
+      window.location.href = "/";
+
+    }
+
+    }, []);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
@@ -99,16 +110,16 @@ const Registration = () => {
         },
         doctorDetails: {
           doctorDetailsId: 0,
-          experience: experience,
+         
+          experience: parseInt(experience),
           qualification: qualification,
           specialization: specialization,
         },
       };
       console.log(doctordetails);
       const resp = service.register_doctor_details(doctordetails)
-      if( resp.status === 200) {
         window.location.href = "/analyse";
-      }
+      
 
     
 
@@ -117,12 +128,14 @@ const Registration = () => {
 
 
   return (
+    <div className="activity-form-container m-5 mx-auto text-center" style={{marginTop: "5rem"}}>
+
     <div
       style={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: "2rem",
+        // marginTop: "2rem",
       }}
     >
       <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>
@@ -168,6 +181,7 @@ const Registration = () => {
             required
             type="date"
             placeholder=""
+            label=""
             value={dob}
             onChange={(e) => setDob(e.target.value)}
             min={1}
@@ -241,6 +255,7 @@ const Registration = () => {
           Register
         </Button>
       </form>
+    </div>
     </div>
   );
 };

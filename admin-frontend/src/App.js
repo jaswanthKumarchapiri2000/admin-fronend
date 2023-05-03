@@ -9,6 +9,7 @@ import question from './components/question'
 import Loginform from './components/LoginForm';
 import HeaderPage from './components/HeaderPage';
 import FooterPage from './components/FooterPage';
+import HomePage from './components/HomePage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path='/register' Component={doctorregistration}></Route>
               <Route path='/activity' Component={ActivityPage}></Route>
               <Route path='/question' Component={question}></Route>
+              <Route path='/homepage' Component={HomePage}></Route>
 
 
 

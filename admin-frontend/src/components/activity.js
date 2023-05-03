@@ -12,6 +12,15 @@ function ActivityForm() {
   const [email, setEmail] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
+   
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+    if (!token){
+      window.location.href = "/";
+    }
+
+    }, []);
+
   useEffect(() => {
     ApiService.getAdminId(email)
       .then((response) => {
@@ -57,7 +66,7 @@ function ActivityForm() {
   };
 
   return (
-    <div className="activity-form-container m-5 mx-auto text-center">
+    <div className="activity-form-container m-5 mx-auto text-center" style={{marginTop: "5rem"}}>
       <div className="activity-form">
         <div className="activity-icon-container">
           <FontAwesomeIcon icon={faRunning} size="5x" color="#7B16FF" />

@@ -1,4 +1,5 @@
 import React from "react";
+import {  useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -38,15 +39,20 @@ const useStyles = makeStyles((theme) => ({
 
 const handleLogout = () => {
   // clear the token from local storage
-  localStorage.removeItem("email");
+  localStorage.removeItem("token");
 
   // navigate to the login page
   window.location.href = "/";
 };
 
+const Jumpto = () => {
+  window.location.href = "/homepage";
+
+}
+
 function HeaderPage() {
   const classes = useStyles();
-
+  
   return (
     <AppBar position="static" className={classes.appBar}>
       <Toolbar>
@@ -61,12 +67,16 @@ function HeaderPage() {
         <Typography variant="h6" className={classes.title}>
           Better U Application
         </Typography>
-        {localStorage.getItem("email") && (
+        {localStorage.getItem("token") && (
           <>
             <Button color="inherit" className={classes.button}>
               Home
             </Button>
-            <Button color="inherit" className={classes.button}>
+            <Button
+              color="inherit"
+              onClick={Jumpto}
+              className={classes.button}
+            >
               About
             </Button>
             <Button

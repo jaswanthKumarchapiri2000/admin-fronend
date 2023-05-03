@@ -1,0 +1,35 @@
+.homepagecontainer {
+    max-height: 500px;
+    overflow: auto;
+  }
+  
+  .home-page {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .heading {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+  
+  .para-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .para {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+  
+  .highlight {
+    font-weight: bold;
+    color: #2c1d69;
+  }
+  

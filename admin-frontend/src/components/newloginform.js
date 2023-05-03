@@ -53,6 +53,7 @@ const  Newloginform =  () => {
     };
 
     return (
+      <div >
         <MDBContainer className="my-5">
           <MDBCard>
             <MDBRow className="g-0">
@@ -131,6 +132,7 @@ const  Newloginform =  () => {
             </MDBRow>
           </MDBCard>
         </MDBContainer>
+        </div>
       );
       
 }
